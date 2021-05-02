@@ -14,6 +14,7 @@ sqlalchemy = "*"
 asyncpg = "*"
 psycopg2-binary = "*"
 pytest = "*"
+alembic = "*"
 
 [requires]
 python_version = "3.8"
