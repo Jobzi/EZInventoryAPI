@@ -15,6 +15,7 @@ asyncpg = "*"
 psycopg2-binary = "*"
 pytest = "*"
 alembic = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [requires]
 python_version = "3.8"
