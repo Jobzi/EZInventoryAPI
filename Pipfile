@@ -16,6 +16,9 @@ psycopg2-binary = "*"
 pytest = "*"
 alembic = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
+email-validator = "*"
+aiosqlite = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
