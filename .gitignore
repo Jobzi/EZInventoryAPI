@@ -115,3 +115,6 @@ dmypy.json
 
 # .vscode folder
 .vscode/
+
+# Testing sqlite database
+*.db
