@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 
 # Import fixtures to make them avilable for all tests
 from app.tests.fixtures.user import *
+from app.tests.fixtures.role import *
 
 app.dependency_overrides[PostgreSqlConnector.get_db] = SqLiteConnector.get_db
 

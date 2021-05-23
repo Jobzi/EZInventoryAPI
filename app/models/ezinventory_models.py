@@ -65,7 +65,7 @@ class Role(PostgreSqlConnector.Base):
     uuid = sqla.Column(GUUID(), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     name = sqla.Column(sqla.String(100), nullable=False)
     permissions = sqla.Column(sqla.JSON(none_as_null=False), nullable=False)
-    status = sqla.Column(sqla.Enum(StatusConstants))
+    status = sqla.Column(sqla.Enum(StatusConstants), default=StatusConstants.ACTIVE)
 
     def __repr__(self) -> str:
         return f'Role[{self.uuid}] {self.name}'
