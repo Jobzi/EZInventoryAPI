@@ -16,3 +16,10 @@ class DniTypes(Enum):
     STANDARD = 'STANDARD'
     RUC = 'RUC'
     PASSPORT = 'PASSPORT'
+
+
+class MessureUnits(Enum):
+    UNITS = "UNIT"
+    GRAMS = "GRAMS"
+    LITRE = "LITRE"
+    METERS = "METER"
