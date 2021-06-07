@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 
 from app.models.ezinventory_models import User, UserRolesByTenant
 from app.serializers.user import UserCreate
@@ -6,6 +6,7 @@ from app.utils.constants import StatusConstants
 from app.utils.functions import filter_dict_keys
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import subqueryload
 
 from .base import BaseManager
 
@@ -15,7 +16,9 @@ class UserManager(BaseManager):
 
     @classmethod
     async def fetch_by_uuid(cls, db: AsyncSession, uuid: str, filter_status: str = StatusConstants.DELETED) -> Union[User, None]:
-        query = select(User).where(User.uuid == uuid, User.status != filter_status)
+        query = select(User)\
+            .options(subqueryload(User.roles_by_tenant).subqueryload('role'))\
+            .where(User.uuid == uuid, User.status != filter_status)
         result = await cls.execute_stmt(db, query)
         return result.scalars().first()
 
@@ -40,3 +43,25 @@ class UserManager(BaseManager):
         await db.commit()
         await db.refresh(db_user)
         return db_user
+
+    @classmethod
+    def group_permissions_by_tenant(cls, user_roles_by_tenant: List[UserRolesByTenant]) -> Union[User, None]:
+        permissions_by_tenant = dict()
+        for role_by_tenant in user_roles_by_tenant:
+            if (tenant_uuid := str(role_by_tenant.tenant_uuid)) not in permissions_by_tenant:
+                permissions_by_tenant[tenant_uuid] = list()
+            permissions_by_tenant[tenant_uuid].extend(role_by_tenant.role.permissions)
+        return permissions_by_tenant
+
+    @classmethod
+    async def fetch_active_user_by_username(cls, db: AsyncSession, username: str) -> Union[User, None]:
+        query = select(User)\
+            .options(subqueryload(User.roles_by_tenant).subqueryload('role'))\
+            .where(User.username == username, User.status == StatusConstants.ACTIVE)
+        result = await cls.execute_stmt(db, query)
+        return result.scalars().first()
+
+    @classmethod
+    async def authenticate_user(cls, db: AsyncSession, username: str, password: str) -> Union[User, None]:
+        user = await cls.fetch_active_user_by_username(db, username)
+        return user if user and user.validate_password(password) else None

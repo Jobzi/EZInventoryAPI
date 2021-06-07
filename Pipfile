@@ -21,6 +21,8 @@ passlib = {extras = ["bcrypt"], version = "*"}
 email-validator = "*"
 aiosqlite = "*"
 requests = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+python-multipart = "*"
 
 [requires]
 python_version = "3.8"

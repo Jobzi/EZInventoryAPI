@@ -15,21 +15,27 @@ def user():
 
 
 @pytest.fixture
-def user_with_tenant_and_roles():
+def user_with_tenant_and_roles(user, create_tenant, create_role):
     return {
-        'username': functions.get_random_string(),
-        'password': functions.get_random_string(),
-        'email': functions.get_random_email(),
-        'phone': functions.get_random_phone(),
-        'tenant_uuid': '',
-        'roles': []
+        **user,
+        'tenant_uuid': str(create_tenant.uuid),
+        'roles': [create_role.json().get('uuid')]
     }
 
 
 @pytest.fixture
-def create_user(client: 'TestClient', user: dict):
+def create_user(client: 'TestClient', user_with_tenant_and_roles: dict):
     response = client.post(
         '/user',
-        json=user
+        json=user_with_tenant_and_roles
     )
     return response
+
+
+@pytest.fixture
+def user_w_password(client: 'TestClient', user_with_tenant_and_roles: dict):
+    response = client.post(
+        '/user',
+        json=user_with_tenant_and_roles
+    )
+    return {**response.json(), 'password': user_with_tenant_and_roles['password']}

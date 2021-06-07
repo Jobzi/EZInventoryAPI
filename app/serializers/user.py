@@ -1,7 +1,7 @@
-from typing import List, Optional
+from typing import List
 from uuid import UUID
 
-from pydantic import BaseModel, validator, EmailStr
+from pydantic import BaseModel, EmailStr
 
 from .base import BaseTable
 
@@ -17,15 +17,9 @@ class User(BaseTable):
 
 
 class UserCreate(BaseModel):
-    tenant_uuid: Optional[UUID]
-    roles: Optional[List[UUID]]
+    tenant_uuid: UUID
+    roles: List[UUID]
     username: str
     password: str
     email: EmailStr
     phone: str
-
-    @validator('roles', 'tenant_uuid')
-    def check_roles_and_tenant(cls, v, values,  **kwargs):
-        if 'tenant_uuid' not in values and 'roles' not in values:
-            raise ValueError('roles and tenant_uuid should be both included or left empty')
-        return v
