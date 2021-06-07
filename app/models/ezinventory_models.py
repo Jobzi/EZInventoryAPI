@@ -160,7 +160,8 @@ class Stock(PostgreSqlConnector.Base):
     __tablename__ = 'stock'
 
     uuid = sqla.Column(GUUID(), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    product_uuid = sqla.Column(GUUID(), sqla.ForeignKey('product.uuid'))
+    product_uuid = sqla.Column(GUUID(), sqla.ForeignKey('product.uuid'), nullable=False)
+    user_uuid = sqla.Column(GUUID(), sqla.ForeignKey('user.uuid'), nullable=False)
     current_ammount = sqla.Column(sqla.Integer(), nullable=False)
     changed_by = sqla.Column(sqla.Integer(), nullable=False)
     operation = sqla.Column(sqla.Enum(OperationConstants))
@@ -239,8 +240,9 @@ class Invoice(BaseTable):
     __tablename__ = 'invoice'
 
     uuid = sqla.Column(GUUID(), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    product_uuid = sqla.Column(GUUID(), sqla.ForeignKey('product.uuid'))
-    customer_uuid = sqla.Column(GUUID(), sqla.ForeignKey('customer.uuid'))
+    product_uuid = sqla.Column(GUUID(), sqla.ForeignKey('product.uuid'), nullable=False)
+    customer_uuid = sqla.Column(GUUID(), sqla.ForeignKey('customer.uuid'), nullable=False)
+    user_uuid = sqla.Column(GUUID(), sqla.ForeignKey('user.uuid'), nullable=False)
     product_ammount = sqla.Column(sqla.Integer(), nullable=False)
     # NOTE: We store prices as an integer ammount of cents to avoid presicion errors
     product_unit_price = sqla.Column(sqla.Integer(), nullable=False)
