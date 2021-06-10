@@ -20,7 +20,3 @@ async def auth_user(permissions: SecurityScopes,
                     token: str = Depends(AuthFunctions.oauth2_scheme)) -> dict:
 
     return await AuthFunctions.check_user_permissions(db, __get_user, permissions, token)
-
-
-async def mock_auth_user():
-    return {}

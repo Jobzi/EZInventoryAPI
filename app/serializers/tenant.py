@@ -13,6 +13,9 @@ class Tenant(BaseTable):
     email: EmailStr
     description: str
 
+    class Config:
+        orm_mode = True
+
 
 class TenantCreate(BaseModel):
     name: str

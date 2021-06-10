@@ -23,3 +23,8 @@ class MessureUnits(Enum):
     GRAMS = "GRAMS"
     LITRE = "LITRE"
     METERS = "METER"
+
+
+class DbDialects(Enum):
+    POSTGRESQL = 'postgresql'
+    SQLITE = 'sqlite'

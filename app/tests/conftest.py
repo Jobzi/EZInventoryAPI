@@ -4,7 +4,8 @@ import pytest
 from app.db.postgre_connector import PostgreSqlConnector
 from app.db.sqlite_connector import SqLiteConnector
 from app.main import app
-from app.security import AuthFunctions, auth_user, mock_auth_user
+from app.security import AuthFunctions, auth_user
+from app.tests.test_utils.mocks import mock_auth_user
 
 # Import fixtures to make them avilable for all tests
 from app.tests.fixtures.role import *

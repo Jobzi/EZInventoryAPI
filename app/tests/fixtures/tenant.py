@@ -13,7 +13,12 @@ def tenant():
     return {
         'name': functions.get_random_string(),
         'main_address': {
-            'main_street': 'test street'
+            'main_street': 'test street',
+            'house_number': 1,
+            'zip_code': '12121',
+            'city': 'test city',
+            'state': 'test state',
+            'country': 'test country',
         },
         'phone': functions.get_random_phone(),
         'email': functions.get_random_email(),
