@@ -117,7 +117,6 @@ class PermisionTemplate(PostgreSqlConnector.Base):
 class ProductBase(BaseTable):
     __abstract__ = True
 
-    uuid = sqla.Column(GUUID(), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     name = sqla.Column(sqla.String(100), nullable=False)
     description = sqla.Column(sqla.String())
     # NOTE: We store prices as an integer ammount of cents to avoid presicion errors
@@ -125,12 +124,13 @@ class ProductBase(BaseTable):
     provicer_unit_price = sqla.Column(sqla.Integer(), nullable=False)
     reorder_level = sqla.Column(sqla.Integer(), nullable=True)
     reorder_ammount = sqla.Column(sqla.Integer(), nullable=True)
-    picture_path = sqla.Column(sqla.String())
+    picture_path = sqla.Column(sqla.String(), nullable=True)
     meta = sqla.Column(sqla.JSON(none_as_null=False), nullable=False)
 
 
 class ProductTemplate(ProductBase):
     __tablename__ = 'product_template'
+    uuid = sqla.Column(GUUID(), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
 
     def __repr__(self) -> str:
         return f'ProductTemplate[{self.uuid}] {self.name}'
@@ -139,6 +139,7 @@ class ProductTemplate(ProductBase):
 class Product(ProductBase):
     __tablename__ = 'product'
 
+    uuid = sqla.Column(GUUID(), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     tenant_uuid = sqla.Column(GUUID(), sqla.ForeignKey('tenant.uuid'))
     category_uuid = sqla.Column(GUUID(), sqla.ForeignKey('category.uuid'))
 

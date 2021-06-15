@@ -10,7 +10,9 @@ from app.tests.test_utils.mocks import mock_auth_user
 # Import fixtures to make them avilable for all tests
 from app.tests.fixtures.role import *
 from app.tests.fixtures.tenant import *
+from app.tests.fixtures.category import *
 from app.tests.fixtures.user import *
+from app.tests.fixtures.product import *
 
 from fastapi.testclient import TestClient
 
