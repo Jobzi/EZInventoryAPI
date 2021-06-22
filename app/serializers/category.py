@@ -10,6 +10,9 @@ class Category(BaseTable):
     name: str
     description: str
 
+    class Config:
+        orm_mode = True
+
 
 class CategoryCreate(BaseModel):
     name: str

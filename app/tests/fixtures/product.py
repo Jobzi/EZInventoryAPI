@@ -8,7 +8,7 @@ from ..test_utils import functions, mocks
 def product(create_tenant, create_category, create_user):
     return {
         'tenant_uuid': str(create_tenant.uuid),
-        'category_uuid': str(create_category.uuid),
+        'category_uuid': create_category.json()['uuid'],
         'user_uuid': create_user.json()['uuid'],
         'name': functions.get_random_string(),
         'description': functions.get_random_string(),
