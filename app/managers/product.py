@@ -1,10 +1,10 @@
-from typing import Union
 from datetime import datetime
+from typing import Union
 
-from app.models.ezinventory_models import Product, Stock, OperationConstants
+from app.models.ezinventory_models import OperationConstants, Product, Stock
 from app.serializers.product import ProductCreate
-from app.utils.constants import DbDialects, StatusConstants
 from app.utils import functions
+from app.utils.constants import StatusConstants
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,7 +22,7 @@ class ProductManager(BaseManager):
         return result.scalars().first()
 
     @classmethod
-    async def add_stock_entry(cls, db:AsyncSession, product_uuid: str, initial_stock: int, user_uuid: str):
+    async def add_stock_entry(cls, db: AsyncSession, product_uuid: str, initial_stock: int, user_uuid: str):
         initial_stock_entry = [
             Stock(
                 user_uuid=user_uuid,
@@ -38,7 +38,7 @@ class ProductManager(BaseManager):
     async def create_product(cls, db: AsyncSession, product: ProductCreate) -> Union[Product, None]:
         product_dict = functions.filter_dict_keys(product.dict(), {'initial_stock', 'user_uuid'})
         db_product = cls.add_to_session(db, Product(**product_dict))
-        
+
         await db.flush()
         await cls.add_stock_entry(db, db_product.uuid, product.initial_stock, product.user_uuid)
 
@@ -56,8 +56,8 @@ class ProductManager(BaseManager):
         result = await cls.execute_update_stmt(db, query, cls.fetch_by_uuid, uuid=uuid, filtered_status=None)
 
         return result
-    
+
     @classmethod
     async def delete_product_by_uuid(cls, db: AsyncSession, uuid: str) -> dict:
         return await cls.update_product_by_uuid(db, uuid, {'status': StatusConstants.DELETED,
-                                                         'deleted_on': datetime.utcnow()})
+                                                           'deleted_on': datetime.utcnow()})

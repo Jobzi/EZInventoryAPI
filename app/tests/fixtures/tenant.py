@@ -5,21 +5,14 @@ from typing import Callable
 import pytest
 from app.models.ezinventory_models import Tenant
 
-from ..test_utils import functions
+from ..test_utils import functions, mocks
 
 
 @pytest.fixture
 def tenant():
     return {
         'name': functions.get_random_string(),
-        'main_address': {
-            'main_street': 'test street',
-            'house_number': 1,
-            'zip_code': '12121',
-            'city': 'test city',
-            'state': 'test state',
-            'country': 'test country',
-        },
+        'main_address': mocks.mock_address(),
         'phone': functions.get_random_phone(),
         'email': functions.get_random_email(),
         'description': 'test tenant'

@@ -1,10 +1,10 @@
 from typing import Any, Coroutine, Union
 
+from app.utils.constants import DbDialects
+from app.utils.functions import build_from_key_value_arrays
 from sqlalchemy.engine.result import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.base import Executable
-from app.utils.constants import DbDialects
-from app.utils.functions import build_from_key_value_arrays
 
 
 class BaseManager:
@@ -16,8 +16,8 @@ class BaseManager:
         return await db.execute(stmt)
 
     @classmethod
-    async def execute_update_stmt(cls, db: AsyncSession, stmt: Executable, return_corutine: Coroutine, 
-                                    **corutine_parameters: dict) -> Union[dict, type(model)]:
+    async def execute_update_stmt(cls, db: AsyncSession, stmt: Executable, return_corutine: Coroutine,
+                                  **corutine_parameters: dict) -> Union[dict, type(model)]:
         if db.bind.dialect.name == DbDialects.POSTGRESQL.value:
             result = (await db.execute(stmt.returning(*cls.columns))).first()
             await db.commit()
