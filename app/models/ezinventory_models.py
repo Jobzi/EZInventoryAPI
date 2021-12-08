@@ -98,6 +98,8 @@ class UserRolesByTenant(PostgreSqlConnector.Base):
         primaryjoin=f"and_(UserRolesByTenant.tenant_uuid==Tenant.uuid, Tenant.status!='{StatusConstants.DELETED.value}')",
     )
 
+    __table_args__ = (sqla.UniqueConstraint('tenant_uuid', 'role_uuid', 'user_uuid', name='user_roles_by_tenant_unique_constraint'),)
+
     def __repr__(self) -> str:
         return f'UserRoleBytenant[{self.uuid}] tenant={self.tenant_uuid} user={self.user_uuid}'
 
@@ -163,6 +165,7 @@ class Stock(PostgreSqlConnector.Base):
     uuid = sqla.Column(GUUID(), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     product_uuid = sqla.Column(GUUID(), sqla.ForeignKey('product.uuid'), nullable=False)
     user_uuid = sqla.Column(GUUID(), sqla.ForeignKey('user.uuid'), nullable=False)
+    provider_uuid = sqla.Column(GUUID(), default=None, nullable=True)
     current_ammount = sqla.Column(sqla.Integer(), nullable=False)
     changed_by = sqla.Column(sqla.Integer(), nullable=False)
     operation = sqla.Column(sqla.Enum(OperationConstants))
@@ -215,6 +218,8 @@ class ProductProviders(PostgreSqlConnector.Base):
         'Provider',
         primaryjoin=f"and_(ProductProviders.provider_uuid==Provider.uuid, Provider.status!='{StatusConstants.DELETED.value}')",
         backref=backref('products', order_by=uuid))
+
+    __table_args__ = (sqla.UniqueConstraint('product_uuid', 'provider_uuid', name='product_providers_unique_constraint'),)
 
     def __repr__(self) -> str:
         return f'ProductProviders[{self.uuid}] provider={self.provider_uuid} product={self.product_uuid}'

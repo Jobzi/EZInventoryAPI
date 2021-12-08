@@ -52,10 +52,10 @@ def test_get_tenants_related_to_user(client, create_user):
     assert len(tenants) > 0
 
 
-def test_add_tenant_role_to_user(client, create_user, create_role):
+def test_add_tenant_role_to_user(client, create_user, create_role_standalone):
     user = create_user.json()
     user_uuid = user['uuid']
-    role_uuid = create_role.json()['uuid']
+    role_uuid = create_role_standalone.json()['uuid']
     tenant_response = client.get(f"/user/{user_uuid}/tenants")
     tenant_uuid = tenant_response.json().pop()['uuid']
     response = client.post('/user/role',

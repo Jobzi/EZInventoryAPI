@@ -19,3 +19,12 @@ def create_role(client: 'TestClient', role: dict):
         json=role
     )
     return response
+
+
+@pytest.fixture
+def create_role_standalone(client: 'TestClient', role: dict):
+    response = client.post(
+        '/role',
+        json=role
+    )
+    return response
