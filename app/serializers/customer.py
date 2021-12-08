@@ -18,6 +18,9 @@ class Customer(BaseTable):
     description: str
     meta: Optional[dict]
 
+    class Config:
+        orm_mode = True
+
 
 class CustomerCreate(BaseModel):
     name: str
@@ -26,5 +29,15 @@ class CustomerCreate(BaseModel):
     main_address: Address
     phone: str
     email: EmailStr
+    description: Optional[str]
+    meta: Optional[dict]
+
+
+class CustomerUpdate(BaseModel):
+    uuid: UUID
+    name: Optional[str]
+    main_address: Optional[Address]
+    phone: Optional[str]
+    email: Optional[EmailStr]
     description: Optional[str]
     meta: Optional[dict]

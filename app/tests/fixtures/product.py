@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from ..test_utils import functions, mocks
+from ..test_utils import functions
 
 
 @pytest.fixture

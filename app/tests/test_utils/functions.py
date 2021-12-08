@@ -17,7 +17,11 @@ def get_random_email() -> str:
     return f"{get_random_string()}@{get_random_choice(['hotmail.com', 'gmail.com', 'test.com'])}"
 
 
-def get_random_phone() -> str:
+def get_random_sequence(length: int) -> str:
     digits = list(map(str, range(10)))
-    random.shuffle(digits)
-    return ''.join(digits)
+    sequence = [digits[random.randint(0, 9)] for _ in range(length)]
+    return ''.join(sequence)
+
+
+def get_random_phone() -> str:
+    return get_random_sequence(10)

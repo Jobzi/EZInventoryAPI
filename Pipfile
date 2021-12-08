@@ -12,7 +12,7 @@ requests = "*"
 [packages]
 fastapi = "*"
 uvicorn = "*"
-sqlalchemy = "*"
+sqlalchemy = {extras = ["asyncpg"], version = "*"}
 asyncpg = "*"
 psycopg2-binary = "*"
 pytest = "*"
@@ -23,6 +23,7 @@ aiosqlite = "*"
 requests = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 python-multipart = "*"
+fastapi-pagination = {extras = ["sqlalchemy"], version = "*"}
 
 [requires]
 python_version = "3.8"
